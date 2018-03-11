@@ -11,6 +11,13 @@
     "browser": true,
     "mocha": true
   },
+  "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 6,
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  },
   "rules": {
     "no-console": "off",
     "indent": [ "error", 2 ],
