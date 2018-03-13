@@ -21,7 +21,7 @@ let source_files =[];
 let dest_files = [];
 
 //connect to the source db and load file ids into an array
-let getFiles = ((host, current_db, arr) => {
+let getFiles = ((host, current_db, arr, cb) => {
 
   Mongo.connect(`mongodb://${host}/${current_db}`, function(err, db) {
     
@@ -30,27 +30,35 @@ let getFiles = ((host, current_db, arr) => {
     let dbo = db.db(current_db);
   
     let queryCollection = (col, fDone) => {
-      dbo.collection(col).distinct('_id', {}, {}, function (err, result) {
-        if (err) {
-          console.log(err);
-        } else if (result.length > 0) {
+
+      dbo.collection(col).find({ 
+        uploadDate : { $lte: new Date(), $gte: new Date(new Date().setDate(new Date().getDate() -7))}
+      }).toArray(function (err, result) {
+        if (err) console.log(err);
+        else if (result.length > 0) {
           arr.push(result);
           fDone();
         }
-      });
+      }); 
     };
-      
+
     queryCollection('fs.files', function(){
       console.log('Files: ', arr);
+      cb();
     });
   
     db.close();
+
   });
+
 });
 
-// getFiles(host, source_db, source_files);
-getFiles(dest, source_db, dest_files);
-
+getFiles(host, source_db, source_files, function(){
+  console.log('source_files: ', source_files[0].length);
+  
+});
+//getFiles(dest, source_db, dest_files);
+console.log('dest_files: ', dest_files.length);
 //connect to the dest db and load file ids into an array
 
 
