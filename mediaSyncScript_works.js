@@ -22,6 +22,8 @@ let days_ago = args.time_start_days;
 let source_files = [];
 let dest_files = [];
 
+const collection = 'fs.files';
+
 //connect to the source db and load file ids into an array
 let getMongoMediaFiles = (url, db_name, arr, fDone) => {
 
@@ -35,19 +37,18 @@ let getMongoMediaFiles = (url, db_name, arr, fDone) => {
       dbo.collection(col).find({
         uploadDate : { 
           $lte: new Date(),
-          $gte: new Date(new Date().setDate(new Date().getDate() -days_ago))},
+          $gte: new Date(new Date().setDate(new Date().getDate() - days_ago))},
       })
       .toArray((err, files) => {
         if (err) console.log(err);
         else if (files.length > 0) {
           arr.push(files);
-          fDone(files);
+          fDone();
         }
       }); 
     };
 
-    queryFilesFromXDaysAgo('fs.files', days_ago, () => {
-      // console.log('arr is ', arr)
+    queryFilesFromXDaysAgo(collection, days_ago, () => {
       fDone();
     });
   
@@ -64,7 +65,7 @@ let queryCollections = (url, db) => {
     let arr = [];
 
     //connect to source db and load file from x days ago
-    getMongoMediaFiles(url, db, arr, function(){
+    getMongoMediaFiles(url, db, arr, () => {
       arr = arr[0];
       resolve(arr);     
     });
