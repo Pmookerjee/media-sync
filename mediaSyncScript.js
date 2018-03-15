@@ -1,14 +1,10 @@
-'use strict';
-
-const Mongo = require('mongodb').MongoClient;
-const Grid = require('gridfs-stream');
-const fs = require('fs');
-// const eachOfLimit = require('./internal/eachOfLimit');
-// const withoutIndex = require('./internal/withoutIndex');
-// const wrapAsync = require('./internal/wrapAsync');
-// const difference = require('underscore');
-
-const parseArgs = require('./lib/cl_args');
+const libAsync = require('async');
+const libFS = require('fs');
+const libMongoose = require('mongoose');
+const libGridFS = require('gridfs-stream');
+libGridFS.mongo = libMongoose.mongo;
+ 
+let parseArgs = require('./lib/cl_args');
 
 //get cl args
 let args = parseArgs.run();
@@ -17,59 +13,37 @@ let host = args.source;
 let dest = args.dest;
 let source_db = args.collection;
 
-let source_files =[];
-let dest_files = [];
+let _GridMediaFS = false;
+let arr = [];
 
-//connect to the source db and load file ids into an array
-let getFiles = ((host, current_db, arr, cb) => {
+// create or use an existing mongodb-native db instance 
+let newDBMediaConnection = libMongoose.createConnection(`mongodb://${host}/${source_db}`);
 
-  Mongo.connect(`mongodb://${host}/${current_db}`, function(err, db) {
-    
-    err ? console.dir(err) : console.log(`Connected to ${host}/${current_db}`);
-    
-    let dbo = db.db(current_db);
-  
-    let queryCollection = (col, fDone) => {
+newDBMediaConnection.on('open', function ()
+{
+  _GridMediaFS = libGridFS(newDBMediaConnection.db);
+  console.log('Connection open')
+});
+_GridMediaFS.find({_id: '5a271a8e105573004d8d9818'})
+  .toArray(function (err, result) {
+    if (err) console.log(err);
+    else if (result.length > 0) {
+      arr.push(result);
+      console.log(arr);
+    }
+  }); 
 
-      dbo.collection(col).find({ 
-        uploadDate : { $lte: new Date(), $gte: new Date(new Date().setDate(new Date().getDate() -7))}
-      }).toArray(function (err, result) {
-        if (err) console.log(err);
-        else if (result.length > 0) {
-          arr.push(result);
-          fDone();
-        }
-      }); 
-    };
-
-    queryCollection('fs.files', function(){
-      console.log('Files: ', arr);
-      cb();
-    });
-  
-    db.close();
-
-  });
-
+newDBMediaConnection.on('error', function (err)
+{
+  console.error(`MongoDB connection error: ${err}`);
 });
 
-getFiles(host, source_db, source_files, function(){
-  console.log('source_files: ', source_files[0].length);
-  
+newDBMediaConnection.on('close', function()
+{
+  console.log(`MongoDB connection closed!`);
 });
-//getFiles(dest, source_db, dest_files);
-console.log('dest_files: ', dest_files.length);
-//connect to the dest db and load file ids into an array
 
 
-//get diff between source and dest collections using underscore
-//load into coll
 
-//coll is the diff
-//limit = concurrency 
-//iteratee = function to get media from x days back
-// export default function eachLimit(coll, limit, iteratee, callback) {
-//   eachOfLimit(limit)(coll, withoutIndex(wrapAsync(iteratee)), callback);
-// }
 
-// db = connect()
+ 
