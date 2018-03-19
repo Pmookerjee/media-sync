@@ -30,7 +30,7 @@ queryCollections(source_url, db_name, days_ago)
     let dest_files = data;
     console.log('source_files is ', source_files.length);    
     console.log('dest_files is ', dest_files.length);
-    console.log('source_files[0] is ', source_files[0]);
+    // console.log('source_files[0] is ', source_files[0]);
     // let coll = [];
     // coll.push(source_files[0]);
     let coll = _.filter(source_files, (file) => { return !_.findWhere(dest_files, {filename: file.filename}); });    
@@ -40,9 +40,12 @@ queryCollections(source_url, db_name, days_ago)
     return coll;
   })
   .then(coll => {
+    setTimeout( ()=> {
+      console.log('DONE')
+    }, 5000);
     copyData(dest_url, db_name);
   })
-  .catch(err => { console.log(err); process.exit(1); });
+  .catch(err => { console.log('Error is ', err); process.exit(1); });
 
   // create or use an existing mongodb-native db instance
 // let mongo = require('mongodb');
