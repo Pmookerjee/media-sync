@@ -1,0 +1,28 @@
+{
+  "name": "media-sync",
+  "version": "1.0.0",
+  "description": "Script to pull media from prod db into qa",
+  "main": "media-sync-script.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node media-sync-script.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pmookerjee/media-sync.git"
+  },
+  "author": "Paula Mookerjee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pmookerjee/media-sync/issues"
+  },
+  "homepage": "https://github.com/Pmookerjee/media-sync#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "gridfs-stream": "^1.1.1",
+    "minimist": "^1.2.0",
+    "mongodb": "^3.0.4",
+    "mongoose": "^5.0.10",
+    "underscore": "^1.8.3"
+  }
+}
