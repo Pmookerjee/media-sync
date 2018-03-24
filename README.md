@@ -6,7 +6,7 @@
 
 `node media-sync-start.js [--options]`
 
-************************************* OPTIONS ******************************************
+*** OPTIONS ***
 
 **                                                                                      **
 
@@ -27,8 +27,12 @@
 
 ### Defaults
 
-source: '192.168.2.14:27017', 
-dest: '192.168.2.11:27017',
-database: 'HeadlightFS',
-time_start_days: 7,
-concurrency: '10',
+source: '192.168.2.14:27017'
+
+dest: '192.168.2.11:27017'
+
+database: 'HeadlightFS'
+
+time_start_days: 7
+
+concurrency: '10'
