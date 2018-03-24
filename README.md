@@ -8,7 +8,7 @@
 
 **    --source, --s   Source IP address (STRING) -Default: 192.168.2.14:27017           **
 
-**    --dest, --d   Destination IP address (STRING) -Default: localhost:27017           **
+**    --dest, --d   Destination IP address (STRING) -Default: 192.168.2.11:27017           **
 
 **    --database, --db  Database name (STRING) -Default: HeadlightFS                    **
 
