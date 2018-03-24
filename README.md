@@ -1,7 +1,4 @@
 
-# Script to copy media files from one mongo db into another
-
-
 ## usage
 
 `node media-sync-start.js [--options]`
