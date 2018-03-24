@@ -6,9 +6,8 @@
 
 `node media-sync-start.js [--options]`
 
-*** OPTIONS ***
 
-**                                                                                      **
+                                   *** OPTIONS ***                                                                                    
 
 **    --source, --s   Source IP address (STRING) -Default: 192.168.2.14:27017           **
 
