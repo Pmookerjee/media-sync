@@ -1,5 +1,5 @@
 
-# Script to pull media from one mongo db into another
+# Script to copy media files from one mongo db into another
 
 
 ## usage
