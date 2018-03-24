@@ -22,7 +22,7 @@ module.exports = (args) => {
     reconnectInterval: 500, // Reconnect every 500ms
     poolSize: 20, // Maintain up to 20 socket connections
     socketTimeoutMS: Number.MAX_VALUE,
-    connectTimeoutMS: Number.MAX_VALUE
+    connectTimeoutMS: Number.MAX_VALUE,
   };
 
   //Open connections to source and destination databases
@@ -46,7 +46,6 @@ module.exports = (args) => {
   });
 
   let source_files = [];
-  let dest_files = [];
 
   queryCollections(source_url, db_name, days_ago)
     .then(data => {
@@ -63,4 +62,4 @@ module.exports = (args) => {
       sendDiff(coll, limit, sourceDB, destDB);
     })
     .catch(err => { console.log('Error in catch (media-sync-controller.js:54):', err); process.exit(1); });
-}
+};
