@@ -29,21 +29,8 @@ module.exports = (args) => {
   let sourceDB = mongoose.createConnection(`mongodb://${source_url}/${db_name}`, options);
   let destDB = mongoose.createConnection(`mongodb://${dest_url}/${db_name}`, options);
 
-  sourceDB.once('open', (err) => { if(err) throw err; })
-  destDB.once('open', (err) => { if(err) throw err; })
-
-  sourceDB.on('reconnected', () => { console.log('Connection to source db reestablished'); });
-  destDB.on('reconnected', () => { console.log('Connection to dest db reestablished'); });
-
-  sourceDB.on('disconnected', () => {
-    console.log('Connection to mongo was interrupted');
-    sourceDB = mongoose.createConnection(`mongodb://${source_url}/${db_name}`);
-  });
-
-  destDB.on('disconnected', () => {
-    console.log('Connection to mongo was interrupted');
-    destDB = mongoose.createConnection(`mongodb://${dest_url}/${db_name}`);
-  });
+  sourceDB.once('open', (err) => { if(err) throw err; });
+  destDB.once('open', (err) => { if(err) throw err; });
 
   let source_files = [];
 
@@ -61,5 +48,5 @@ module.exports = (args) => {
     .then(coll => {
       sendDiff(coll, limit, sourceDB, destDB);
     })
-    .catch(err => { console.log('Error in catch (media-sync-controller.js:54):', err); process.exit(1); });
+    .catch(err => { console.log('Error in catch (media-sync-controller.js:51):', err); process.exit(1); });
 };
